@@ -5,10 +5,7 @@ import android.os.Bundle
 import android.widget.Button
 import android.widget.EditText
 import android.widget.Toast
-import androidx.activity.enableEdgeToEdge
 import androidx.appcompat.app.AppCompatActivity
-import androidx.core.view.ViewCompat
-import androidx.core.view.WindowInsetsCompat
 import androidx.lifecycle.lifecycleScope
 import io.ktor.client.HttpClient
 import io.ktor.client.call.body
@@ -20,6 +17,7 @@ import io.ktor.http.contentType
 import kotlinx.coroutines.launch
 
 class LoginActivity : AppCompatActivity() {
+
     private val client = HttpClient(CIO)
     private val baseUrl = "http://10.0.2.2:8080"
 
@@ -33,16 +31,26 @@ class LoginActivity : AppCompatActivity() {
         val btnGoToRegister = findViewById<Button>(R.id.btnGoToRegister)
 
         btnLogin.setOnClickListener {
-            val login = editLogin.text.toString()
-            val password = editPassword.text.toString()
+            val login = editLogin.text.toString().trim()
+            val password = editPassword.text.toString().trim()
+
+            if (login.isEmpty() || password.isEmpty()) {
+                Toast.makeText(this, "Заполните все поля", Toast.LENGTH_SHORT).show()
+                return@setOnClickListener
+            }
+
             lifecycleScope.launch {
                 val userId = login(login, password)
                 if (userId != null) {
-                    saveUserId(userId)
+                    // Сохраняем userId в SharedPreferences
+                    getSharedPreferences("app_prefs", MODE_PRIVATE).edit()
+                        .putString("userId", userId)
+                        .apply()
+                    Toast.makeText(this@LoginActivity, "Вход выполнен", Toast.LENGTH_SHORT).show()
                     startActivity(Intent(this@LoginActivity, MainActivity::class.java))
                     finish()
                 } else {
-                    Toast.makeText(this@LoginActivity, "Ошибка входа", Toast.LENGTH_SHORT).show()
+                    Toast.makeText(this@LoginActivity, "Неверный логин или пароль", Toast.LENGTH_SHORT).show()
                 }
             }
         }
@@ -52,20 +60,32 @@ class LoginActivity : AppCompatActivity() {
         }
     }
 
+    /**
+     * Отправляет запрос на сервер для входа.
+     * @return userId если успех, иначе null
+     */
     private suspend fun login(login: String, password: String): String? {
         return try {
             val response = client.post("$baseUrl/login") {
                 contentType(ContentType.Application.Json)
                 setBody("{\"login\":\"$login\",\"password\":\"$password\"}")
-            }.body<String>()
-            response.substringAfter("\"userId\":\"").substringBefore("\"")
+            }
+            // Проверяем статус ответа
+            if (response.status.value == 200) {
+                val body = response.body<String>()
+                // Ожидаем JSON вида {"userId":"..."}
+                body.substringAfter("\"userId\":\"").substringBefore("\"")
+            } else {
+                null
+            }
         } catch (e: Exception) {
+            e.printStackTrace()
             null
         }
     }
 
-    private fun saveUserId(userId: String) {
-        getSharedPreferences("app_prefs", MODE_PRIVATE).edit()
-            .putString("userId", userId).apply()
+    override fun onDestroy() {
+        super.onDestroy()
+        client.close()
     }
 }
