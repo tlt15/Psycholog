@@ -1,6 +1,7 @@
 package com.example.psycholog
 
 
+import android.content.Intent
 import android.media.MediaPlayer
 import android.os.Bundle
 import android.widget.Button
@@ -44,6 +45,10 @@ class MainActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
+        findViewById<Button>(R.id.btnLogout).setOnClickListener {
+            startActivity(Intent(this, LoginActivity::class.java))
+            finish()
+        }
 
         // Генерация или загрузка анонимного ID
         val prefs = getSharedPreferences("app_prefs", MODE_PRIVATE)
