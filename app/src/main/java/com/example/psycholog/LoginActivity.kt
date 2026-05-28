@@ -1,0 +1,71 @@
+package com.example.psycholog
+
+import android.content.Intent
+import android.os.Bundle
+import android.widget.Button
+import android.widget.EditText
+import android.widget.Toast
+import androidx.activity.enableEdgeToEdge
+import androidx.appcompat.app.AppCompatActivity
+import androidx.core.view.ViewCompat
+import androidx.core.view.WindowInsetsCompat
+import androidx.lifecycle.lifecycleScope
+import io.ktor.client.HttpClient
+import io.ktor.client.call.body
+import io.ktor.client.engine.cio.CIO
+import io.ktor.client.request.post
+import io.ktor.client.request.setBody
+import io.ktor.http.ContentType
+import io.ktor.http.contentType
+import kotlinx.coroutines.launch
+
+class LoginActivity : AppCompatActivity() {
+    private val client = HttpClient(CIO)
+    private val baseUrl = "http://10.0.2.2:8080"
+
+    override fun onCreate(savedInstanceState: Bundle?) {
+        super.onCreate(savedInstanceState)
+        setContentView(R.layout.activity_login)
+
+        val editLogin = findViewById<EditText>(R.id.editLogin)
+        val editPassword = findViewById<EditText>(R.id.editPassword)
+        val btnLogin = findViewById<Button>(R.id.btnLogin)
+        val btnGoToRegister = findViewById<Button>(R.id.btnGoToRegister)
+
+        btnLogin.setOnClickListener {
+            val login = editLogin.text.toString()
+            val password = editPassword.text.toString()
+            lifecycleScope.launch {
+                val userId = login(login, password)
+                if (userId != null) {
+                    saveUserId(userId)
+                    startActivity(Intent(this@LoginActivity, MainActivity::class.java))
+                    finish()
+                } else {
+                    Toast.makeText(this@LoginActivity, "Ошибка входа", Toast.LENGTH_SHORT).show()
+                }
+            }
+        }
+
+        btnGoToRegister.setOnClickListener {
+            startActivity(Intent(this, RegisterActivity::class.java))
+        }
+    }
+
+    private suspend fun login(login: String, password: String): String? {
+        return try {
+            val response = client.post("$baseUrl/login") {
+                contentType(ContentType.Application.Json)
+                setBody("{\"login\":\"$login\",\"password\":\"$password\"}")
+            }.body<String>()
+            response.substringAfter("\"userId\":\"").substringBefore("\"")
+        } catch (e: Exception) {
+            null
+        }
+    }
+
+    private fun saveUserId(userId: String) {
+        getSharedPreferences("app_prefs", MODE_PRIVATE).edit()
+            .putString("userId", userId).apply()
+    }
+}
