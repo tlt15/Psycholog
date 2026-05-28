@@ -1,6 +1,8 @@
 package com.example.server
 
 
+import com.example.psycholog.server.configureRouting
+import com.example.psycholog.server.initDatabase
 import io.ktor.serialization.kotlinx.json.json
 import io.ktor.http.HttpHeaders
 import io.ktor.http.HttpMethod

@@ -33,16 +33,25 @@ class MainActivity : AppCompatActivity() {
     }
     private val baseUrl = "http://10.0.2.2:8080"
     private lateinit var userId: String
-
     private var mediaPlayer: MediaPlayer? = null
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
 
-        // Проверка авторизации и инициализация userId
-        if (!updateUserIdAndCheckAuth()) return
+        // Проверяем, есть ли сохранённый userId
+        val prefs = getSharedPreferences("app_prefs", MODE_PRIVATE)
+        val savedUserId = prefs.getString("userId", null)
 
+        if (savedUserId.isNullOrEmpty()) {
+            // Если нет – переходим на экран входа и закрываем MainActivity
+            startActivity(Intent(this, LoginActivity::class.java))
+            finish()
+            return
+        }
+        userId = savedUserId
+
+        // Инициализация UI
         val panicButton = findViewById<Button>(R.id.panicButton)
         val moodHappy = findViewById<Button>(R.id.moodHappyButton)
         val moodNeutral = findViewById<Button>(R.id.moodNeutralButton)
@@ -50,7 +59,7 @@ class MainActivity : AppCompatActivity() {
         val fetchStatsButton = findViewById<Button>(R.id.fetchStatsButton)
         val statsTextView = findViewById<TextView>(R.id.statsTextView)
         val meditationButton = findViewById<Button>(R.id.meditationButton)
-        val logoutButton = findViewById<Button>(R.id.btnLogout)
+        val btnLogout = findViewById<Button>(R.id.btnLogout)
 
         panicButton.setOnClickListener {
             startBreathingExercise()
@@ -88,7 +97,8 @@ class MainActivity : AppCompatActivity() {
             startMeditation()
         }
 
-        logoutButton.setOnClickListener {
+        btnLogout.setOnClickListener {
+            // Очищаем данные пользователя при выходе
             getSharedPreferences("app_prefs", MODE_PRIVATE).edit().clear().apply()
             startActivity(Intent(this, LoginActivity::class.java))
             finish()
@@ -97,26 +107,15 @@ class MainActivity : AppCompatActivity() {
 
     override fun onResume() {
         super.onResume()
-        // При возврате из LoginActivity обновляем userId и сбрасываем статистику
-        updateUserIdAndCheckAuth()
-        findViewById<TextView>(R.id.statsTextView).text = "Статистика"
-    }
-
-    /**
-     * Обновляет userId из SharedPreferences. Если пользователь не авторизован,
-     * переходит на экран входа и закрывает текущую Activity.
-     * @return true если авторизован, false если нет
-     */
-    private fun updateUserIdAndCheckAuth(): Boolean {
+        // Дополнительная проверка при возврате из других Activity
         val prefs = getSharedPreferences("app_prefs", MODE_PRIVATE)
-        val storedUserId = prefs.getString("userId", null)
-        return if (storedUserId != null) {
-            userId = storedUserId
-            true
-        } else {
+        val currentUserId = prefs.getString("userId", null)
+        if (currentUserId.isNullOrEmpty()) {
             startActivity(Intent(this, LoginActivity::class.java))
             finish()
-            false
+        } else if (currentUserId != userId) {
+            userId = currentUserId
+            findViewById<TextView>(R.id.statsTextView).text = "Статистика"
         }
     }
 
@@ -148,7 +147,7 @@ class MainActivity : AppCompatActivity() {
             val response: String = client.get("$baseUrl/today_stats") {
                 header("X-User-Id", userId)
             }.body()
-            // Ручной парсинг, так как сериализация может не работать
+            // Ручной парсинг JSON (если сериализация не работает)
             val panicCount = response.substringAfter("\"panicCount\":").substringBefore(",").toIntOrNull() ?: 0
             val lastMoodRaw = response.substringAfter("\"lastMood\":").substringBefore("}")
             val lastMood = if (lastMoodRaw == "null") null else lastMoodRaw.trim('"')
