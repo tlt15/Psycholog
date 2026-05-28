@@ -15,6 +15,9 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.Psycholog">
         <activity
+            android:name=".ArticlesActivity"
+            android:exported="false" />
+        <activity
             android:name=".LoginActivity"
             android:exported="false" />
         <activity

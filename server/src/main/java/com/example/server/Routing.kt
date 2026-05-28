@@ -125,7 +125,7 @@ fun Application.configureRouting() {
             call.respondText(json, ContentType.Application.Json)
         }
 
-        // ==================== Получение всех статей (КОММИТ 8) ====================
+        // ==================== Получение всех статей (коммит 8) ====================
         get("/articles") {
             val articles = transaction {
                 Articles.selectAll().orderBy(Articles.createdAt to SortOrder.DESC).map {
@@ -134,6 +134,35 @@ fun Application.configureRouting() {
                         "title" to it[Articles.title],
                         "content" to it[Articles.content]
                     )
+                }
+            }
+            val json = buildString {
+                append("[")
+                articles.forEachIndexed { idx, art ->
+                    if (idx > 0) append(",")
+                    append("{\"id\":${art["id"]},\"title\":\"${art["title"]}\",\"content\":\"${art["content"]}\"}")
+                }
+                append("]")
+            }
+            call.respondText(json, ContentType.Application.Json)
+        }
+
+        // ==================== Поиск статей (КОММИТ 9) ====================
+        get("/articles/search") {
+            val query = call.request.queryParameters["q"] ?: ""
+            val articles = if (query.isBlank()) {
+                emptyList()
+            } else {
+                transaction {
+                    Articles.select {
+                        (Articles.title like "%$query%") or (Articles.content like "%$query%")
+                    }.orderBy(Articles.createdAt to SortOrder.DESC).map {
+                        mapOf(
+                            "id" to it[Articles.id],
+                            "title" to it[Articles.title],
+                            "content" to it[Articles.content]
+                        )
+                    }
                 }
             }
             val json = buildString {
