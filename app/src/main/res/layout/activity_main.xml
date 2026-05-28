@@ -1,20 +1,52 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
-    xmlns:tools="http://schemas.android.com/tools"
-    android:id="@+id/main"
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".MainActivity">
+    android:orientation="vertical"
+    android:padding="16dp">
+
+    <Button
+        android:id="@+id/panicButton"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="Мне плохо прямо сейчас" />
+
+    <Button
+        android:id="@+id/moodHappyButton"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="😊 Хорошо" />
+
+    <Button
+        android:id="@+id/moodNeutralButton"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="😐 Нормально" />
+
+    <Button
+        android:id="@+id/moodSadButton"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="😞 Плохо" />
+
+    <Button
+        android:id="@+id/fetchStatsButton"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="Показать статистику" />
 
     <TextView
+        android:id="@+id/statsTextView"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="Hello World!"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.477" />
+        android:text="Статистика"
+        android:textSize="16sp"
+        android:layout_marginTop="16dp"/>
 
-</androidx.constraintlayout.widget.ConstraintLayout>
+    <Button
+        android:id="@+id/meditationButton"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="Медитация 3 мин" />
+
+</LinearLayout>

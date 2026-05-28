@@ -20,8 +20,10 @@ exposed = "0.53.0"
 sqliteJdbc = "3.47.0.0"
 logback = "1.5.18"
 jetbrainsKotlinJvm = "2.0.21"
+kotlinx-serialization-json = "1.7.3"
 
 [libraries]
+kotlinx-serialization-json = { group = "org.jetbrains.kotlinx", name = "kotlinx-serialization-json", version.ref = "kotlinx-serialization-json" }
 androidx-core-ktx = { group = "androidx.core", name = "core-ktx", version.ref = "coreKtx" }
 junit = { group = "junit", name = "junit", version.ref = "junit" }
 androidx-junit = { group = "androidx.test.ext", name = "junit", version.ref = "junitVersion" }
