@@ -12,7 +12,7 @@ import java.util.UUID
 fun Application.configureRouting() {
     routing {
 
-        // ==================== Регистрация ====================
+        // Регистрация
         post("/register") {
             val request = call.receiveText()
             val login = request.substringAfter("\"login\":\"").substringBefore("\"")
@@ -43,7 +43,7 @@ fun Application.configureRouting() {
             call.respond(mapOf("userId" to newUserId))
         }
 
-        // ==================== Логин ====================
+        // Логин
         post("/login") {
             val request = call.receiveText()
             val login = request.substringAfter("\"login\":\"").substringBefore("\"")
@@ -62,7 +62,7 @@ fun Application.configureRouting() {
             call.respond(mapOf("userId" to user[Users.userId]))
         }
 
-        // ==================== Паника ====================
+        // Паника
         post("/panic") {
             val userId = call.request.headers["X-User-Id"]
                 ?: return@post call.respond(HttpStatusCode.BadRequest, "Missing user id")
@@ -78,7 +78,7 @@ fun Application.configureRouting() {
             call.respond(HttpStatusCode.OK, "Panic event recorded")
         }
 
-        // ==================== Настроение ====================
+        // Настроение
         post("/mood") {
             val userId = call.request.headers["X-User-Id"]
                 ?: return@post call.respond(HttpStatusCode.BadRequest, "Missing user id")
@@ -96,7 +96,7 @@ fun Application.configureRouting() {
             call.respond(HttpStatusCode.OK, "Mood recorded")
         }
 
-        // ==================== Статистика за сегодня ====================
+        // Статистика за сегодня
         get("/today_stats") {
             val userId = call.request.headers["X-User-Id"]
                 ?: return@get call.respond(HttpStatusCode.BadRequest, "Missing user id")
@@ -125,7 +125,7 @@ fun Application.configureRouting() {
             call.respondText(json, ContentType.Application.Json)
         }
 
-        // ==================== Получение всех статей (коммит 8) ====================
+        // Получение всех статей
         get("/articles") {
             val articles = transaction {
                 Articles.selectAll().orderBy(Articles.createdAt to SortOrder.DESC).map {
@@ -147,7 +147,7 @@ fun Application.configureRouting() {
             call.respondText(json, ContentType.Application.Json)
         }
 
-        // ==================== Поиск статей (КОММИТ 9) ====================
+        // Поиск статей
         get("/articles/search") {
             val query = call.request.queryParameters["q"] ?: ""
             val articles = if (query.isBlank()) {

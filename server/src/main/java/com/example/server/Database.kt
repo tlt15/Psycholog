@@ -38,7 +38,6 @@ fun initDatabase() {
     transaction {
         SchemaUtils.create(Events, Users, Articles)
 
-        // Если таблица статей пуста, заполняем 10 примерами
         if (Articles.selectAll().empty()) {
             val now = System.currentTimeMillis()
             Articles.insert {

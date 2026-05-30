@@ -4,9 +4,6 @@ plugins {
     application
 }
 
-//repositories {
-//    mavenCentral()
-//}
 
 dependencies {
     implementation(libs.ktor.server.core)
@@ -22,7 +19,12 @@ dependencies {
     implementation(libs.exposed.jdbc)
     implementation(libs.sqlite.jdbc)
     implementation(libs.logback.classic)
-}   // ← закрыли dependencies
+    implementation(libs.androidx.compose.ui.desktop)
+    testImplementation(kotlin("test"))
+    testImplementation(libs.ktor.server.test.host)
+    testImplementation(libs.h2)  // для базы в памяти
+    testImplementation(libs.exposed.dao) // уже есть, но для тестов тоже
+}
 
 application {
     mainClass.set("com.example.server.ApplicationKt")

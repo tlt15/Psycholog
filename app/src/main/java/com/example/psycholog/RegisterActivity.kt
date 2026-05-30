@@ -68,7 +68,6 @@ class RegisterActivity : AppCompatActivity() {
                 contentType(ContentType.Application.Json)
                 setBody("{\"login\":\"$login\",\"password\":\"$password\"}")
             }.body<String>()
-            // Ожидаем ответ {"userId":"..."}
             response.substringAfter("\"userId\":\"").substringBefore("\"")
         } catch (e: Exception) {
             e.printStackTrace()
