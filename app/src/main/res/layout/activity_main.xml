@@ -1,66 +1,201 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    android:id="@+id/main"
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:orientation="vertical"
+    android:background="#CCFF90"
     android:padding="16dp">
 
-    <Button
+    <!-- ЗАГОЛОВОК "Psycholog" -->
+    <TextView
+        android:id="@+id/titleText"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Psycholog"
+        android:textSize="40sp"
+        android:textStyle="bold"
+        android:textColor="#056F00"
+        android:fontFamily="sans-serif-medium"
+        android:layout_marginTop="24dp"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent" />
+
+    <!-- Кнопка "Мне плохо прямо сейчас" (теперь привязана к заголовку) -->
+
+    <!-- Три кнопки настроения – теперь привязаны к заголовку (не к верху) -->
+
+    <com.google.android.material.button.MaterialButton
         android:id="@+id/panicButton"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:text="Мне плохо прямо сейчас" />
+        android:layout_width="379dp"
+        android:layout_height="150dp"
+        android:layout_marginBottom="344dp"
+        android:text="Мне плохо прямо сейчас"
+        android:textAllCaps="false"
+        android:textColor="#CA311C"
+        android:textSize="18sp"
+        app:backgroundTint="#FF8810"
+        app:cornerRadius="12dp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.0"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/moodHappyButton"
+        app:layout_constraintVertical_bias="1.0"
+        app:strokeColor="#CA311C"
+        app:strokeWidth="2dp" />
 
-    <Button
-        android:id="@+id/btnArticles"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="Статьи"
-        android:layout_marginTop="8dp" />
-
-    <Button
-        android:id="@+id/btnLogout"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="Сменить аккаунт" />
-
-    <Button
+    <com.google.android.material.button.MaterialButton
         android:id="@+id/moodHappyButton"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:text="😊 Хорошо" />
+        android:layout_width="0dp"
+        android:layout_height="75dp"
+        android:layout_marginTop="116dp"
+        android:layout_marginEnd="8dp"
+        android:text="😊 Хорошо"
+        android:textAllCaps="false"
+        android:textColor="#056F00"
+        android:textSize="16sp"
+        app:backgroundTint="#64DD17"
+        app:cornerRadius="12dp"
+        app:layout_constraintEnd_toStartOf="@+id/moodNeutralButton"
+        app:layout_constraintHorizontal_chainStyle="spread"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:strokeColor="#056F00"
+        app:strokeWidth="2dp" />
 
-    <Button
+    <com.google.android.material.button.MaterialButton
         android:id="@+id/moodNeutralButton"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:text="😐 Нормально" />
+        android:layout_width="0dp"
+        android:layout_height="75dp"
+        android:layout_marginStart="8dp"
+        android:layout_marginEnd="8dp"
+        android:text="😐 Средне"
+        android:textAllCaps="false"
+        android:textColor="#056F00"
+        android:textSize="16sp"
+        app:backgroundTint="#64DD17"
+        app:strokeColor="#056F00"
+        app:strokeWidth="2dp"
+        app:cornerRadius="12dp"
+        app:layout_constraintEnd_toStartOf="@+id/moodSadButton"
+        app:layout_constraintStart_toEndOf="@+id/moodHappyButton"
+        app:layout_constraintTop_toTopOf="@+id/moodHappyButton" />
 
-    <Button
+    <com.google.android.material.button.MaterialButton
         android:id="@+id/moodSadButton"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:text="😞 Плохо" />
+        android:layout_width="0dp"
+        android:layout_height="75dp"
+        android:layout_marginStart="8dp"
+        android:text="😞 Плохо"
+        android:textAllCaps="false"
+        android:textSize="16sp"
+        android:textColor="#056F00"
+        app:backgroundTint="#64DD17"
+        app:strokeColor="#056F00"
+        app:strokeWidth="2dp"
+        app:cornerRadius="12dp"
+        app:layout_constraintTop_toTopOf="@+id/moodHappyButton"
+        app:layout_constraintStart_toEndOf="@+id/moodNeutralButton"
+        app:layout_constraintEnd_toEndOf="parent" />
 
-    <Button
+    <!-- Кнопка "Статьи" -->
+    <com.google.android.material.button.MaterialButton
+        android:id="@+id/btnArticles"
+        android:layout_width="106dp"
+        android:layout_height="81dp"
+        android:text="Статьи"
+        android:textAllCaps="false"
+        android:textColor="#056F00"
+        android:textSize="16sp"
+        app:backgroundTint="#64DD17"
+        app:strokeColor="#056F00"
+        app:strokeWidth="2dp"
+        app:cornerRadius="12dp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="1.0"
+        app:layout_constraintStart_toEndOf="@+id/btnLogout"
+        app:layout_constraintTop_toTopOf="@+id/fetchStatsButton"
+        app:layout_constraintVertical_bias="1.0" />
+
+    <!-- Кнопка "Показать статистику" -->
+
+    <!-- Текст статистики -->
+    <com.google.android.material.button.MaterialButton
         android:id="@+id/fetchStatsButton"
-        android:layout_width="match_parent"
+        android:layout_width="0dp"
         android:layout_height="wrap_content"
-        android:text="Показать статистику" />
+        android:layout_marginTop="36dp"
+        android:text="Показать статистику"
+        android:textAllCaps="false"
+        android:textColor="#056F00"
+        android:textSize="16sp"
+        app:backgroundTint="#64DD17"
+        app:cornerRadius="12dp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.0"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/meditationButton"
+        app:layout_constraintVertical_bias="0.0"
+        app:strokeColor="#056F00"
+        app:strokeWidth="2dp" />
 
+    <!-- Кнопка "Медитация" -->
+
+    <!-- Кнопка "Сменить аккаунт" в левом нижнем углу -->
     <TextView
         android:id="@+id/statsTextView"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:layout_marginTop="16dp"
         android:text="Статистика"
+        android:textColor="#056F00"
         android:textSize="16sp"
-        android:layout_marginTop="16dp"/>
+        app:layout_constraintBottom_toTopOf="@+id/btnLogout"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.498"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/fetchStatsButton"
+        app:layout_constraintVertical_bias="0.163" />
 
-    <Button
+    <com.google.android.material.button.MaterialButton
         android:id="@+id/meditationButton"
-        android:layout_width="match_parent"
+        android:layout_width="0dp"
         android:layout_height="wrap_content"
-        android:text="Медитация 3 мин" />
+        android:layout_marginTop="20dp"
+        android:text="Медитация 3 мин"
+        android:textAllCaps="false"
+        android:textColor="#056F00"
+        android:textSize="16sp"
+        app:backgroundTint="#64DD17"
+        app:cornerRadius="12dp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.0"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/panicButton"
+        app:strokeColor="#056F00"
+        app:strokeWidth="2dp" />
 
-</LinearLayout>
+    <com.google.android.material.button.MaterialButton
+        android:id="@+id/btnLogout"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="8dp"
+        android:layout_marginBottom="16dp"
+        android:text="Сменить аккаунт"
+        android:textAllCaps="false"
+        android:textColor="#827717"
+        android:textSize="14sp"
+        app:backgroundTint="#C6FF00"
+        app:strokeColor="#827717"
+        app:strokeWidth="2dp"
+        app:cornerRadius="12dp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="@+id/fetchStatsButton"
+        app:layout_constraintVertical_bias="0.98" />
+
+</androidx.constraintlayout.widget.ConstraintLayout>

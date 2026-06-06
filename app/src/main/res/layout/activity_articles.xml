@@ -2,6 +2,8 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:background="#CCFF90"
     android:orientation="vertical"
     android:padding="16dp">
 
@@ -14,25 +16,36 @@
             android:id="@+id/editSearch"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
+            android:textColor="#056F00"
+            android:backgroundTint="#64DD17"
             android:layout_weight="1"
             android:hint="Поиск статей..." />
 
-        <Button
+        <com.google.android.material.button.MaterialButton
             android:id="@+id/btnSearch"
             android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="Искать" />
+            android:layout_height="match_parent"
+            android:text="Искать"
+            android:textAllCaps="false"
+            android:textColor="#056F00"
+            app:backgroundTint="#64DD17"
+            app:cornerRadius="12dp"
+            app:strokeColor="#056F00"
+            app:strokeWidth="2dp" />
     </LinearLayout>
 
     <com.google.android.material.chip.ChipGroup
         android:id="@+id/chipGroupHistory"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:backgroundTint="#64DD17"
+        android:textColor="#056F00"
         android:layout_marginTop="8dp" />
 
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/recyclerViewArticles"
         android:layout_width="match_parent"
+        android:textColor="#056F00"
         android:layout_height="0dp"
         android:layout_weight="1" />
 
