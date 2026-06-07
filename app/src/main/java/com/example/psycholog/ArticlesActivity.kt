@@ -1,6 +1,5 @@
 package com.example.psycholog
 
-import java.net.URLEncoder
 import android.os.Bundle
 import android.widget.Button
 import android.widget.EditText
@@ -16,7 +15,10 @@ import io.ktor.client.call.body
 import io.ktor.client.engine.cio.CIO
 import io.ktor.client.request.get
 import kotlinx.coroutines.launch
+import java.net.URLEncoder
+
 data class Article(val id: Int, val title: String, val content: String)
+
 class ArticlesActivity : AppCompatActivity() {
 
     private val client = HttpClient(CIO)
@@ -48,6 +50,9 @@ class ArticlesActivity : AppCompatActivity() {
             if (query.isNotEmpty()) {
                 saveSearchQuery(query)
                 performSearch(query)
+            } else {
+                // Если поле поиска пустое – загружаем все статьи
+                loadArticles()
             }
         }
 
@@ -64,6 +69,11 @@ class ArticlesActivity : AppCompatActivity() {
     }
 
     private fun performSearch(query: String) {
+        // Если вдруг вызовут с пустой строкой – показываем все статьи
+        if (query.isBlank()) {
+            loadArticles()
+            return
+        }
         lifecycleScope.launch {
             val articles = searchArticles(query)
             articlesList.clear()
@@ -84,7 +94,7 @@ class ArticlesActivity : AppCompatActivity() {
 
     private suspend fun searchArticles(query: String): List<Article> {
         return try {
-            val encodedQuery = java.net.URLEncoder.encode(query, "UTF-8")
+            val encodedQuery = URLEncoder.encode(query, "UTF-8")
             val response: String = client.get("$baseUrl/articles/search?q=$encodedQuery").body()
             parseArticles(response)
         } catch (e: Exception) {
@@ -106,19 +116,17 @@ class ArticlesActivity : AppCompatActivity() {
 
     private fun saveSearchQuery(query: String) {
         val prefs = getSharedPreferences("search_prefs", MODE_PRIVATE)
-        // Используем список, сериализованный в строку, так как Set не сохраняет порядок
         val history = getSearchHistory().toMutableList()
         history.remove(query)
         history.add(0, query)
         val trimmed = if (history.size > 5) history.subList(0, 5) else history
-        val set = trimmed.toSet()
-        prefs.edit().putStringSet("recent_searches", set).apply()
+        prefs.edit().putStringSet("recent_searches", trimmed.toSet()).apply()
+        displaySearchHistory()
     }
 
     private fun getSearchHistory(): List<String> {
         val prefs = getSharedPreferences("search_prefs", MODE_PRIVATE)
-        val set = prefs.getStringSet("recent_searches", emptySet())
-        return set?.toList() ?: emptyList()
+        return prefs.getStringSet("recent_searches", emptySet())?.toList() ?: emptyList()
     }
 
     private fun displaySearchHistory() {
