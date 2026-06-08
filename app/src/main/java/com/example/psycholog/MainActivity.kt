@@ -59,7 +59,7 @@ class MainActivity : AppCompatActivity() {
         val statsTextView = findViewById<TextView>(R.id.statsTextView)
         val meditationButton = findViewById<Button>(R.id.meditationButton)
         val btnLogout = findViewById<Button>(R.id.btnLogout)
-        val btnArticles = findViewById<Button>(R.id.btnArticles)  // <- новая кнопка
+        val btnArticles = findViewById<Button>(R.id.btnArticles)
 
         // Обработчики
         panicButton.setOnClickListener {

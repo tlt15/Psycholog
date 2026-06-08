@@ -7,7 +7,6 @@
     android:background="#CCFF90"
     android:padding="16dp">
 
-    <!-- ЗАГОЛОВОК "Psycholog" -->
     <TextView
         android:id="@+id/titleText"
         android:layout_width="wrap_content"
@@ -21,10 +20,6 @@
         app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintEnd_toEndOf="parent" />
-
-    <!-- Кнопка "Мне плохо прямо сейчас" (теперь привязана к заголовку) -->
-
-    <!-- Три кнопки настроения – теперь привязаны к заголовку (не к верху) -->
 
     <com.google.android.material.button.MaterialButton
         android:id="@+id/panicButton"
@@ -100,7 +95,6 @@
         app:layout_constraintStart_toEndOf="@+id/moodNeutralButton"
         app:layout_constraintEnd_toEndOf="parent" />
 
-    <!-- Кнопка "Статьи" -->
     <com.google.android.material.button.MaterialButton
         android:id="@+id/btnArticles"
         android:layout_width="106dp"
@@ -120,9 +114,6 @@
         app:layout_constraintTop_toTopOf="@+id/fetchStatsButton"
         app:layout_constraintVertical_bias="1.0" />
 
-    <!-- Кнопка "Показать статистику" -->
-
-    <!-- Текст статистики -->
     <com.google.android.material.button.MaterialButton
         android:id="@+id/fetchStatsButton"
         android:layout_width="0dp"
@@ -143,9 +134,6 @@
         app:strokeColor="#056F00"
         app:strokeWidth="2dp" />
 
-    <!-- Кнопка "Медитация" -->
-
-    <!-- Кнопка "Сменить аккаунт" в левом нижнем углу -->
     <TextView
         android:id="@+id/statsTextView"
         android:layout_width="wrap_content"

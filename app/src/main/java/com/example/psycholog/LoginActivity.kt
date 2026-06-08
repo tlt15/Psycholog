@@ -42,7 +42,6 @@ class LoginActivity : AppCompatActivity() {
             lifecycleScope.launch {
                 val userId = login(login, password)
                 if (userId != null) {
-                    // Сохраняем userId в SharedPreferences
                     getSharedPreferences("app_prefs", MODE_PRIVATE).edit()
                         .putString("userId", userId)
                         .apply()
@@ -60,10 +59,6 @@ class LoginActivity : AppCompatActivity() {
         }
     }
 
-    /**
-     * Отправляет запрос на сервер для входа.
-     * @return userId если успех, иначе null
-     */
     private suspend fun login(login: String, password: String): String? {
         return try {
             val response = client.post("$baseUrl/login") {

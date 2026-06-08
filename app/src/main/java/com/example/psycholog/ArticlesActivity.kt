@@ -51,7 +51,6 @@ class ArticlesActivity : AppCompatActivity() {
                 saveSearchQuery(query)
                 performSearch(query)
             } else {
-                // Если поле поиска пустое – загружаем все статьи
                 loadArticles()
             }
         }
@@ -69,7 +68,6 @@ class ArticlesActivity : AppCompatActivity() {
     }
 
     private fun performSearch(query: String) {
-        // Если вдруг вызовут с пустой строкой – показываем все статьи
         if (query.isBlank()) {
             loadArticles()
             return
